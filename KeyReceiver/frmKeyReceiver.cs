@@ -75,6 +75,20 @@ namespace KeyReceiver
             initListen();
             serverRunning = true;
             btnServerStop.Enabled = true;
+            readServerIP();
+        }
+
+        private void readServerIP()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            IPAddress hostaddress = host.AddressList.FirstOrDefault(x => x.AddressFamily == AddressFamily.InterNetwork);
+            if (hostaddress != null)
+            {
+                txtServerIP.Text = hostaddress.ToString();
+            } else
+            {
+                txtServerIP.Text = "Error..";
+            }
         }
 
         /**
@@ -155,6 +169,7 @@ namespace KeyReceiver
             }
             listener.Stop();
             btnServerStart.Enabled = true;
+            txtServerIP.Text = "Waiting...";
         }
 
         #endregion

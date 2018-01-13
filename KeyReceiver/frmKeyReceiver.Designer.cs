@@ -42,6 +42,7 @@
             this.txtClientAddress = new System.Windows.Forms.TextBox();
             this.btnAddButtons = new System.Windows.Forms.Button();
             this.lstButtons = new System.Windows.Forms.ListBox();
+            this.txtServerIP = new System.Windows.Forms.TextBox();
             this.grpClientServer.SuspendLayout();
             this.grpServer.SuspendLayout();
             this.grpClient.SuspendLayout();
@@ -103,6 +104,7 @@
             // 
             // grpServer
             // 
+            this.grpServer.Controls.Add(this.txtServerIP);
             this.grpServer.Controls.Add(this.btnServerStop);
             this.grpServer.Controls.Add(this.btnServerStart);
             this.grpServer.Enabled = false;
@@ -115,9 +117,9 @@
             // 
             // btnServerStop
             // 
-            this.btnServerStop.Location = new System.Drawing.Point(87, 19);
+            this.btnServerStop.Location = new System.Drawing.Point(63, 19);
             this.btnServerStop.Name = "btnServerStop";
-            this.btnServerStop.Size = new System.Drawing.Size(75, 23);
+            this.btnServerStop.Size = new System.Drawing.Size(56, 23);
             this.btnServerStop.TabIndex = 1;
             this.btnServerStop.Text = "Stop";
             this.btnServerStop.UseVisualStyleBackColor = true;
@@ -127,7 +129,7 @@
             // 
             this.btnServerStart.Location = new System.Drawing.Point(6, 19);
             this.btnServerStart.Name = "btnServerStart";
-            this.btnServerStart.Size = new System.Drawing.Size(75, 23);
+            this.btnServerStart.Size = new System.Drawing.Size(51, 23);
             this.btnServerStart.TabIndex = 0;
             this.btnServerStart.Text = "Start";
             this.btnServerStart.UseVisualStyleBackColor = true;
@@ -193,6 +195,15 @@
             this.lstButtons.Size = new System.Drawing.Size(172, 108);
             this.lstButtons.TabIndex = 0;
             // 
+            // txtServerIP
+            // 
+            this.txtServerIP.Location = new System.Drawing.Point(125, 21);
+            this.txtServerIP.Name = "txtServerIP";
+            this.txtServerIP.ReadOnly = true;
+            this.txtServerIP.Size = new System.Drawing.Size(98, 20);
+            this.txtServerIP.TabIndex = 4;
+            this.txtServerIP.Text = "Waiting...";
+            // 
             // frmKeyReceiver
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -208,6 +219,7 @@
             this.grpClientServer.ResumeLayout(false);
             this.grpClientServer.PerformLayout();
             this.grpServer.ResumeLayout(false);
+            this.grpServer.PerformLayout();
             this.grpClient.ResumeLayout(false);
             this.grpClient.PerformLayout();
             this.ResumeLayout(false);
@@ -230,6 +242,7 @@
         private System.Windows.Forms.TextBox txtPort;
         private System.Windows.Forms.Label lblServerPort;
         private System.Windows.Forms.Button btnClientDisconnect;
+        private System.Windows.Forms.TextBox txtServerIP;
     }
 }
 
