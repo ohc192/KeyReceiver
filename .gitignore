@@ -3,3 +3,5 @@
 ################################################################################
 
 /KeyReceiver/bin
+/KeyReceiver/obj
+/.vs/KeyReceiver/v15/Server/sqlite3
