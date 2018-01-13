@@ -16,6 +16,9 @@ This is a client/server key receiver made for the PUBG radar
 8. (BUG WHEN USING SERVER: Make sure pubg radar window is not the active window, for example click taskbar)
 
 # Finding server IP address
+New since 1.1:
+1. The server IP address will be put in the box next to the start/stop buttons on the server instance.
+OBSOLETE:
 1. Open a command prompt (Win + R and type 'cmd') on the server.
 2. Type 'ipconfig' and press enter.
 3. Look for the adapter that connects you to your home network (the same the client is on).
