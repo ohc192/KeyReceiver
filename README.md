@@ -3,7 +3,7 @@
 </p>
 
 # KeyReceiver
-This is a client/server key receiver made for the DamnCheaters PUBG radar
+This is a client/server key receiver made for the PUBG radar
 
 # How to use
 1. Start program on client (pc you will play  PUBG on) and on the server (running the DC radar).
