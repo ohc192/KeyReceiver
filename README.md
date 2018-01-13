@@ -11,7 +11,7 @@ This is a client/server key receiver made for the DamnCheaters PUBG radar
 7. CLIENT: Click 'Connect'.
 
 # Finding server IP address
-1. Open a command prompt (Win + r and type 'cmd').
+1. Open a command prompt (Win + r and type 'cmd') on the server.
 2. Type 'ipconfig' and press enter.
 3. Look for the adapter that connects you to your home network (the same the client is on).
 4. The IPv4 address will be the address you are looking for.
