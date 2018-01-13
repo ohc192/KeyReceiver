@@ -13,7 +13,7 @@ This is a client/server key receiver made for the DamnCheaters PUBG radar
 5. CLIENT: Press the 'Stop' button to stop adding keys.
 6. CLIENT: Fill in the local IP address of the server (see 'Finding server IP address').
 7. CLIENT: Click 'Connect'.
-8. (BUG in CLIENT: Make sure pubg radar window is not the active window, for example click taskbar)
+8. (BUG WHEN USING SERVER: Make sure pubg radar window is not the active window, for example click taskbar)
 
 # Finding server IP address
 1. Open a command prompt (Win + r and type 'cmd') on the server.
