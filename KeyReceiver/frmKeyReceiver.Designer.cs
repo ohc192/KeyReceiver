@@ -34,15 +34,17 @@
             this.rdbtnServer = new System.Windows.Forms.RadioButton();
             this.rdbtnClient = new System.Windows.Forms.RadioButton();
             this.grpServer = new System.Windows.Forms.GroupBox();
+            this.txtServerIP = new System.Windows.Forms.TextBox();
             this.btnServerStop = new System.Windows.Forms.Button();
             this.btnServerStart = new System.Windows.Forms.Button();
             this.grpClient = new System.Windows.Forms.GroupBox();
+            this.lstButtons = new System.Windows.Forms.ListView();
+            this.clnClientKey = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.clnServerKey = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnClientDisconnect = new System.Windows.Forms.Button();
             this.btnClientConnect = new System.Windows.Forms.Button();
             this.txtClientAddress = new System.Windows.Forms.TextBox();
             this.btnAddButtons = new System.Windows.Forms.Button();
-            this.lstButtons = new System.Windows.Forms.ListBox();
-            this.txtServerIP = new System.Windows.Forms.TextBox();
             this.grpClientServer.SuspendLayout();
             this.grpServer.SuspendLayout();
             this.grpClient.SuspendLayout();
@@ -115,6 +117,15 @@
             this.grpServer.TabStop = false;
             this.grpServer.Text = "Server settings";
             // 
+            // txtServerIP
+            // 
+            this.txtServerIP.Location = new System.Drawing.Point(125, 21);
+            this.txtServerIP.Name = "txtServerIP";
+            this.txtServerIP.ReadOnly = true;
+            this.txtServerIP.Size = new System.Drawing.Size(98, 20);
+            this.txtServerIP.TabIndex = 4;
+            this.txtServerIP.Text = "Waiting...";
+            // 
             // btnServerStop
             // 
             this.btnServerStop.Location = new System.Drawing.Point(63, 19);
@@ -137,17 +148,42 @@
             // 
             // grpClient
             // 
+            this.grpClient.Controls.Add(this.lstButtons);
             this.grpClient.Controls.Add(this.btnClientDisconnect);
             this.grpClient.Controls.Add(this.btnClientConnect);
             this.grpClient.Controls.Add(this.txtClientAddress);
             this.grpClient.Controls.Add(this.btnAddButtons);
-            this.grpClient.Controls.Add(this.lstButtons);
             this.grpClient.Location = new System.Drawing.Point(13, 123);
             this.grpClient.Name = "grpClient";
             this.grpClient.Size = new System.Drawing.Size(229, 166);
             this.grpClient.TabIndex = 2;
             this.grpClient.TabStop = false;
             this.grpClient.Text = "Client settings";
+            // 
+            // lstButtons
+            // 
+            this.lstButtons.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.clnClientKey,
+            this.clnServerKey});
+            this.lstButtons.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.lstButtons.Location = new System.Drawing.Point(51, 52);
+            this.lstButtons.Name = "lstButtons";
+            this.lstButtons.Size = new System.Drawing.Size(172, 108);
+            this.lstButtons.TabIndex = 5;
+            this.lstButtons.UseCompatibleStateImageBehavior = false;
+            this.lstButtons.View = System.Windows.Forms.View.Details;
+            this.lstButtons.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lstButtons_MouseDown);
+            // 
+            // clnClientKey
+            // 
+            this.clnClientKey.Tag = "";
+            this.clnClientKey.Text = "Client key";
+            this.clnClientKey.Width = 81;
+            // 
+            // clnServerKey
+            // 
+            this.clnServerKey.Text = "Server key";
+            this.clnServerKey.Width = 83;
             // 
             // btnClientDisconnect
             // 
@@ -187,23 +223,6 @@
             this.btnAddButtons.UseVisualStyleBackColor = true;
             this.btnAddButtons.Click += new System.EventHandler(this.btnAddButtons_Click);
             // 
-            // lstButtons
-            // 
-            this.lstButtons.FormattingEnabled = true;
-            this.lstButtons.Location = new System.Drawing.Point(51, 52);
-            this.lstButtons.Name = "lstButtons";
-            this.lstButtons.Size = new System.Drawing.Size(172, 108);
-            this.lstButtons.TabIndex = 0;
-            // 
-            // txtServerIP
-            // 
-            this.txtServerIP.Location = new System.Drawing.Point(125, 21);
-            this.txtServerIP.Name = "txtServerIP";
-            this.txtServerIP.ReadOnly = true;
-            this.txtServerIP.Size = new System.Drawing.Size(98, 20);
-            this.txtServerIP.TabIndex = 4;
-            this.txtServerIP.Text = "Waiting...";
-            // 
             // frmKeyReceiver
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -236,13 +255,15 @@
         private System.Windows.Forms.Button btnServerStart;
         private System.Windows.Forms.GroupBox grpClient;
         private System.Windows.Forms.Button btnAddButtons;
-        private System.Windows.Forms.ListBox lstButtons;
         private System.Windows.Forms.Button btnClientConnect;
         private System.Windows.Forms.TextBox txtClientAddress;
         private System.Windows.Forms.TextBox txtPort;
         private System.Windows.Forms.Label lblServerPort;
         private System.Windows.Forms.Button btnClientDisconnect;
         private System.Windows.Forms.TextBox txtServerIP;
+        private System.Windows.Forms.ListView lstButtons;
+        private System.Windows.Forms.ColumnHeader clnClientKey;
+        private System.Windows.Forms.ColumnHeader clnServerKey;
     }
 }
 

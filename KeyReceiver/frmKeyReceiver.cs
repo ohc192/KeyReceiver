@@ -1,6 +1,7 @@
 ﻿using Gma.System.MouseKeyHook;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -136,20 +137,20 @@ namespace KeyReceiver
                     case VirtualKeyCode.F1:
                     case VirtualKeyCode.F2:
                         simulator.Keyboard.KeyPress(key);
-                        return;
+                        break;
                     /* Icon size can be done using 10 ms keydown (will not register otherwise) */
                     case VirtualKeyCode.F3:
                     case VirtualKeyCode.F4:
                         simulator.Keyboard.KeyDown(key);
                         Thread.Sleep(10);
                         simulator.Keyboard.KeyUp(key);
-                        return;
+                        break;
                     /* Boolean settings can be done using 50 ms (will not register otherwise) */
                     default:
                         simulator.Keyboard.KeyDown(key);
                         Thread.Sleep(50);
                         simulator.Keyboard.KeyUp(key);
-                        return;
+                        break;
                 }
             }
 
@@ -184,11 +185,13 @@ namespace KeyReceiver
          */
         private void btnClientConnect_Click(object sender, EventArgs e)
         {
+            clientConnected = true;
             btnClientConnect.Enabled = false;
             clientPort = Int32.Parse(txtPort.Text);
             btnClientDisconnect.Enabled = true;
         }
 
+        bool clientConnected = false;
         /**
          * Client disconnect button.
          */
@@ -207,38 +210,48 @@ namespace KeyReceiver
             {
                 client.Close();
             }
+            clientConnected = false;
             btnClientConnect.Enabled = true;
         }
 
         // Maintain a dictionary of actiuve keys and their keyvalues.
-        private Dictionary<string, int> keyDict = new Dictionary<string, int>();
+        private List<RecordKey> keyDict = new List<RecordKey>();
 
         /**
          * On keyboard event.
          */
         private void GlobalHookKeyDown(object sender, KeyEventArgs e)
         {
-            if (adding)
+            Keys key = e.KeyCode;
+            if (isEditing)
             {
-                string key = e.KeyCode.ToString();
-                if (keyDict.ContainsKey(key))
+                RecordKey editedKey = keyDict.First(k => k.clientKey.ToString() == editingClientKey);
+                editedKey.serverKey = key;
+                isEditing = false;
+                fillList();
+            }
+            else if (adding)
+            {
+                if (keyDict.Any(k => k.clientKey == key))
                 {
-                    keyDict.Remove(key);
+                    keyDict.RemoveAll(k => k.clientKey == key);
                 }
                 else
                 {
-                    keyDict.Add(key, e.KeyValue);
+                    keyDict.Add(new RecordKey(key, key));
                 }
                 fillList();
             }
-            else if (keyDict.Any(k => k.Value == e.KeyValue))
-            { 
+            else if (keyDict.Any(k => k.clientKey == key) && clientConnected)
+            {
+                // Assume we can have only one
+                RecordKey recordKey = keyDict.First(k => k.clientKey == key);
                 try
                 {
                     client = new TcpClient(txtClientAddress.Text, clientPort);
                     using (NetworkStream stream = client.GetStream())
                     {
-                        Byte[] data = BitConverter.GetBytes(e.KeyValue); // Encoding.UTF8.GetBytes(e.KeyValue);
+                        Byte[] data = BitConverter.GetBytes((int)recordKey.serverKey); // Encoding.UTF8.GetBytes(e.KeyValue);
                         stream.Write(data, 0, data.Length);
                     }
                     client.Close();
@@ -257,9 +270,9 @@ namespace KeyReceiver
         private void fillList()
         {
             lstButtons.Items.Clear();
-            foreach (string key in keyDict.Keys)
+            foreach (RecordKey key in keyDict)
             {
-                lstButtons.Items.Add(key);
+                lstButtons.Items.Add(new ListViewItem(new[] { key.clientKey.ToString(), key.serverKey.ToString() }));
             }
         }
 
@@ -270,6 +283,11 @@ namespace KeyReceiver
          */
         private void btnAddButtons_Click(object sender, EventArgs e)
         {
+            if (isEditing)
+            {
+                return;
+            }
+
             if (!adding)
             {
                 btnAddButtons.Text = "Stop";
@@ -293,6 +311,21 @@ namespace KeyReceiver
         private void rdbtnServer_CheckedChanged(object sender, EventArgs e)
         {
             grpServer.Enabled = rdbtnServer.Checked;
+        }
+
+        bool isEditing = false;
+        string editingClientKey;
+        private void lstButtons_MouseDown(object sender, MouseEventArgs e)
+        {
+            Point mousePos = lstButtons.PointToClient(Control.MousePosition);
+            ListViewHitTestInfo hitTest = lstButtons.HitTest(mousePos);
+            if (hitTest.Item != null && !adding && !isEditing)
+            {
+                isEditing = true;
+                editingClientKey = hitTest.Item.Text;
+
+                hitTest.Item.SubItems[1].Text = "...";
+            }
         }
     }
 }
