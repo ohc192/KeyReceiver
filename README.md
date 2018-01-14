@@ -13,7 +13,6 @@ This is a client/server key receiver made for the PUBG radar
 5. Client: Press the 'Stop' button to stop adding keys.
 6. Client: Fill in the local IP address of the server (see 'Finding server IP address').
 7. Client: Click 'Connect'.
-8. (Known bug on Server: Make sure pubg radar window is not the _active_ window, for example: click taskbar to achieve this)
 
 # Finding server IP address
 Since 1.1:
