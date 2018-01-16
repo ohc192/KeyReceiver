@@ -11,7 +11,7 @@ This is a client/server key receiver made for the PUBG radar
 3. Client: Click 'Client' button and click 'Add'.
 4. Client: Press the keys you will be recording on the client (usually F1 - F9).
 5. Client: Press the 'Stop' button to stop adding keys.
-(6. Client: Map the local (client) key to a different server key by clicking a row in the table)
+6. Optional: (Client: Map the local (client) key to a different server key by clicking a row in the table)
 7. Client: Fill in the local IP address of the server (see 'Finding server IP address').
 8. Client: Click 'Connect'.
 
