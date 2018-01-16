@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://image.ibb.co/izpnWm/clientserver.png" width=450>
+  <img src="https://image.ibb.co/gKtPWm/clientserver.png" width=450>
 </p>
 
 # KeyReceiver
@@ -17,3 +17,7 @@ This is a client/server key receiver made for the PUBG radar
 # Finding server IP address
 Since 1.1:
 The server IP address will be put in the box next to the start/stop buttons on the server instance.
+
+# How to map client keys to other other keys on the server side
+After adding keys to the listview next to the 'Add'/'Stop' button, click on a row to change the server-side button.
+It will read '...' until you press the next key.
