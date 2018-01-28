@@ -45,6 +45,7 @@
             this.btnClientConnect = new System.Windows.Forms.Button();
             this.txtClientAddress = new System.Windows.Forms.TextBox();
             this.btnAddButtons = new System.Windows.Forms.Button();
+            this.btnAddSpecial = new System.Windows.Forms.Button();
             this.grpClientServer.SuspendLayout();
             this.grpServer.SuspendLayout();
             this.grpClient.SuspendLayout();
@@ -152,6 +153,7 @@
             this.grpClient.Controls.Add(this.btnClientDisconnect);
             this.grpClient.Controls.Add(this.btnClientConnect);
             this.grpClient.Controls.Add(this.txtClientAddress);
+            this.grpClient.Controls.Add(this.btnAddSpecial);
             this.grpClient.Controls.Add(this.btnAddButtons);
             this.grpClient.Location = new System.Drawing.Point(13, 123);
             this.grpClient.Name = "grpClient";
@@ -217,11 +219,21 @@
             // 
             this.btnAddButtons.Location = new System.Drawing.Point(6, 52);
             this.btnAddButtons.Name = "btnAddButtons";
-            this.btnAddButtons.Size = new System.Drawing.Size(39, 108);
+            this.btnAddButtons.Size = new System.Drawing.Size(39, 51);
             this.btnAddButtons.TabIndex = 1;
             this.btnAddButtons.Text = "Add";
             this.btnAddButtons.UseVisualStyleBackColor = true;
             this.btnAddButtons.Click += new System.EventHandler(this.btnAddButtons_Click);
+            // 
+            // btnAddSpecial
+            // 
+            this.btnAddSpecial.Location = new System.Drawing.Point(6, 109);
+            this.btnAddSpecial.Name = "btnAddSpecial";
+            this.btnAddSpecial.Size = new System.Drawing.Size(39, 51);
+            this.btnAddSpecial.TabIndex = 1;
+            this.btnAddSpecial.Text = "Item";
+            this.btnAddSpecial.UseVisualStyleBackColor = true;
+            this.btnAddSpecial.Click += new System.EventHandler(this.btnAddSpecial_Click);
             // 
             // frmKeyReceiver
             // 
@@ -264,6 +276,7 @@
         private System.Windows.Forms.ListView lstButtons;
         private System.Windows.Forms.ColumnHeader clnClientKey;
         private System.Windows.Forms.ColumnHeader clnServerKey;
+        private System.Windows.Forms.Button btnAddSpecial;
     }
 }
 

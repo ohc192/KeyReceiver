@@ -16,6 +16,7 @@ namespace KeyReceiver
     public partial class frmKeyReceiver : Form
     {
         private IKeyboardMouseEvents m_GlobalHook;
+        private DCItemState DCItemState = new DCItemState();
 
         /**
          *  Constructor of this form.
@@ -128,29 +129,39 @@ namespace KeyReceiver
 
                 // Read key from network stream
                 int keyValue = BitConverter.ToInt32(buffer, 0);
-                // Convert to VirtualKeyCode
-                VirtualKeyCode key = (VirtualKeyCode) keyValue;
 
-                // Simulate a keypress on the client
-                switch (key) {
-                    /* Zoom in/out can be done using keypress (smallest step) */
-                    case VirtualKeyCode.F1:
-                    case VirtualKeyCode.F2:
-                        simulator.Keyboard.KeyPress(key);
-                        break;
-                    /* Icon size can be done using 10 ms keydown (will not register otherwise) */
-                    case VirtualKeyCode.F3:
-                    case VirtualKeyCode.F4:
-                        simulator.Keyboard.KeyDown(key);
-                        Thread.Sleep(10);
-                        simulator.Keyboard.KeyUp(key);
-                        break;
-                    /* Boolean settings can be done using 50 ms (will not register otherwise) */
-                    default:
-                        simulator.Keyboard.KeyDown(key);
-                        Thread.Sleep(50);
-                        simulator.Keyboard.KeyUp(key);
-                        break;
+                if (ItemState.isValidCode(keyValue))
+                {
+                    ItemState newState = new ItemState(keyValue);
+                    DCItemState.setState(newState);
+                }
+                else
+                {
+                    // Convert to VirtualKeyCode
+                    VirtualKeyCode key = (VirtualKeyCode) keyValue;
+
+                    // Simulate a keypress on the client
+                    switch (key)
+                    {
+                        /* Zoom in/out can be done using keypress (smallest step) */
+                        case VirtualKeyCode.F1:
+                        case VirtualKeyCode.F2:
+                            simulator.Keyboard.KeyPress(key);
+                            break;
+                        /* Icon size can be done using 10 ms keydown (will not register otherwise) */
+                        case VirtualKeyCode.F3:
+                        case VirtualKeyCode.F4:
+                            simulator.Keyboard.KeyDown(key);
+                            Thread.Sleep(10);
+                            simulator.Keyboard.KeyUp(key);
+                            break;
+                        /* Boolean settings can be done using 50 ms (will not register otherwise) */
+                        default:
+                            simulator.Keyboard.KeyDown(key);
+                            Thread.Sleep(50);
+                            simulator.Keyboard.KeyUp(key);
+                            break;
+                    }
                 }
             }
 
@@ -238,9 +249,26 @@ namespace KeyReceiver
                 }
                 else
                 {
+                    RecordKey k = new RecordKey(key, key);
+                    Console.WriteLine(k.getCode());
+
+
                     keyDict.Add(new RecordKey(key, key));
                 }
                 fillList();
+            }
+            else if (addingSpecial)
+            {
+                ItemSelector selector = new ItemSelector();
+                var result = selector.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    ItemState resultState = selector.ItemState;
+                    keyDict.Add(new RecordKey(key, resultState));
+                }
+                fillList();
+                addingSpecial = false;
+                btnAddSpecial.Text = "Item";
             }
             else if (keyDict.Any(k => k.clientKey == key) && clientConnected)
             {
@@ -251,7 +279,7 @@ namespace KeyReceiver
                     client = new TcpClient(txtClientAddress.Text, clientPort);
                     using (NetworkStream stream = client.GetStream())
                     {
-                        Byte[] data = BitConverter.GetBytes((int)recordKey.serverKey); // Encoding.UTF8.GetBytes(e.KeyValue);
+                        Byte[] data = BitConverter.GetBytes(recordKey.getCode());
                         stream.Write(data, 0, data.Length);
                     }
                     client.Close();
@@ -272,7 +300,14 @@ namespace KeyReceiver
             lstButtons.Items.Clear();
             foreach (RecordKey key in keyDict)
             {
-                lstButtons.Items.Add(new ListViewItem(new[] { key.clientKey.ToString(), key.serverKey.ToString() }));
+                if (key.isKey)
+                {
+                    lstButtons.Items.Add(new ListViewItem(new[] { key.clientKey.ToString(), key.serverKey.ToString() }));
+                }
+                else
+                {
+                    lstButtons.Items.Add(new ListViewItem(new[] { key.clientKey.ToString(), key.resultState.ToString() }));
+                }
             }
         }
 
@@ -283,7 +318,7 @@ namespace KeyReceiver
          */
         private void btnAddButtons_Click(object sender, EventArgs e)
         {
-            if (isEditing)
+            if (isEditing || addingSpecial)
             {
                 return;
             }
@@ -297,6 +332,25 @@ namespace KeyReceiver
                 btnAddButtons.Text = "Add";
             }
             adding = !adding;
+        }
+
+        private bool addingSpecial = false;
+        private void btnAddSpecial_Click(object sender, EventArgs e)
+        {
+            if (isEditing || adding)
+            {
+                return;
+            }
+
+            if (!addingSpecial)
+            {
+                btnAddSpecial.Text = "Stop";
+            }
+            else
+            {
+                btnAddSpecial.Text = "Item";
+            }
+            addingSpecial = !addingSpecial;
         }
         #endregion
 
@@ -319,7 +373,7 @@ namespace KeyReceiver
         {
             Point mousePos = lstButtons.PointToClient(Control.MousePosition);
             ListViewHitTestInfo hitTest = lstButtons.HitTest(mousePos);
-            if (hitTest.Item != null && !adding && !isEditing)
+            if (hitTest.Item != null && !adding && !addingSpecial && !isEditing)
             {
                 isEditing = true;
                 editingClientKey = hitTest.Item.Text;
